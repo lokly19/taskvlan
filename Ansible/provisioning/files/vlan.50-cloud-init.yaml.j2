@@ -1,0 +1,12 @@
+network:
+    version: 2
+    ethernets:
+        enp0s3:
+            dhcp4: true
+        enp0s8: {}
+    vlans:
+        vlan2:
+          id: {{ vlan.id }}
+          link: enp0s8
+          dhcp4: no
+          addresses: [{{ vlan.address }}]
