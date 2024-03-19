@@ -1,0 +1,21 @@
+network:
+  ethernets:
+    enp0s3:
+      dhcp4: true
+    enp0s8:
+      dhcp4: false
+      dhcp6: false
+    enp0s9:
+      dhcp4: false
+      dhcp6: false
+  bonds:
+    bond0:
+      addresses: [{{ bond_address }}]
+      interfaces:
+        - enp0s8
+        - enp0s9
+      parameters:
+        mode: active-backup
+        mii-monitor-interval: 100
+        fail-over-mac-policy: active
+  version: 2
