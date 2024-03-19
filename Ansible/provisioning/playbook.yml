@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: Install packages
+    apt:
+      pkg:
+      - tcpdump
+      - net-tools
+      - traceroute
+      - vim
+      - mc
+      state: latest
+      update_cache: true
+
+- hosts: testServer1,testClient1,testServer2,testClient2
+  become: true
+  tasks:
+  - name: Copy 50-cloud-init.yaml (vlan)
+    template: src=files/vlan.50-cloud-init.yaml.j2 dest=/etc/netplan/50-cloud-init.yaml owner=root group=root mode=0644
+  - name: Apply netplan
+    shell: netplan apply
+
+- hosts: inetRouter, centralRouter
+  become: true
+  tasks:
+  - name: Copy 50-cloud-init.yaml (bonding)
+    template: src=files/bond.50-cloud-init.yaml.j2 dest=/etc/netplan/50-cloud-init.yaml owner=root group=root mode=0644
+  - name: Apply netplan
+    shell: netplan apply
